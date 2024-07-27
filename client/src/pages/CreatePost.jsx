@@ -18,6 +18,8 @@ export default function CreatePost() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null); // For tracking image upload progress
   const [imageUploadError, setImageUploadError] = useState(null); // For handling image upload errors
   const [formData, setFormData] = useState({}); // For holding form data
+
+
   const [publishError, setPublishError] = useState(null); // For handling post creation errors
 
   const navigate = useNavigate(); // To navigate after post creation
@@ -84,8 +86,18 @@ export default function CreatePost() {
       }
 
       // If the post is successfully created, navigate to the new post
-      setPublishError(null);
-      navigate(`/post/${data.slug}`);
+      if (res.ok) {
+        setPublishError(null);
+        const slugs = data.savedPost.slug;
+        if (slugs) {
+          setPublishError(null);
+          navigate(`/post/${slugs}`);
+        } else {
+          setPublishError('Failed to get post slug');
+        }
+
+
+      }
     } catch (error) {
       // Handle network errors
       setPublishError('Something went wrong');
