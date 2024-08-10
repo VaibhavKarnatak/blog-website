@@ -13,7 +13,7 @@ body{
 .ql-editor{
   font-size: 1.05rem;
 }
-
+/*Post content styling*/
 .post-content p{
   margin-bottom: 0.5rem;
 }
