@@ -4,6 +4,7 @@ import { FaThumbsUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Button, Textarea } from 'flowbite-react';
 import { set } from 'mongoose';
+import User from '../../../api/models/user.models';
 
 export default function Comment({ comment, onLike, onEdit, onDelete }) {
   const [user, setUser] = useState({});
@@ -12,18 +13,23 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
   const { currentUser } = useSelector((state) => state.user);
   useEffect(() => {
     const getUser = async () => {
+      console.log(`Fetching user with ID: ${comment.userId}`); // Debug
       try {
         const res = await fetch(`/api/user/${comment.userId}`);
-        const data = await res.json();
-        if (res.ok) {
-          setUser(data);
+        console.log(`Response status: ${res.status}`); // Debug
+        if (!res.ok) {
+          throw new Error('User not found');
         }
+        const data = await res.json();
+        console.log('Fetched user data:', data); // Debug
+        setUser(data);
       } catch (error) {
-        console.log(error.message);
+        console.error('Fetch user error:', error.message); // Debug
       }
     };
     getUser();
-  }, [comment]);
+  }, [comment.userId]); // Ensure dependency is correctly set
+  
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -141,4 +147,3 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
     </div>
   );
 }
-

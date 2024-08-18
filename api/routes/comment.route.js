@@ -1,5 +1,6 @@
 import express from 'express';
 import { verifyToken } from '../utils/verifyUser.js';
+import { getUser } from '../controllers/user.controller.js';
 import {
   createComment,
   deleteComment,
@@ -17,6 +18,7 @@ router.put('/likeComment/:commentId', verifyToken, likeComment);
 router.put('/editComment/:commentId', verifyToken, editComment);
 router.delete('/deleteComment/:commentId', verifyToken, deleteComment);
 router.get('/getcomments', verifyToken, getcomments);
+router.get('/user/:id', getUser);
+
 
 export default router;
-
